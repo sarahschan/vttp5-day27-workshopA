@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -121,7 +122,6 @@ public class ReviewController {
                 .build();
             return ResponseEntity.status(HttpStatus.OK).body(successMsg.toString());
 
-            
 
         } catch (Exception ex) {
             JsonObject errorMsg = Json.createObjectBuilder()
@@ -132,4 +132,32 @@ public class ReviewController {
 
     }
 
+
+    @GetMapping(path = "/review/{review_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getLatestReview(@PathVariable(name = "review_id") String reviewId) {
+        
+        return null;
+    }
+
+
+    @GetMapping(path = "/review/{review_id}/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getReviewHistory(@PathVariable(name = "review_id") String reviewId) {
+        
+        if (!reviewService.checkReviewExists(reviewId)) {
+            throw new NoCommentFoundException(String.format("Review with id %s does not exist", reviewId));
+        }
+
+        try {
+            String review = reviewService.getReviewHistoryById(reviewId);
+            return ResponseEntity.status(HttpStatus.OK).body(review);
+
+
+        } catch (Exception ex) {
+            JsonObject errorMsg = Json.createObjectBuilder()
+            .add("error", ex.getMessage())
+            .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg.toString());
+        }
+        
+    }
 }
