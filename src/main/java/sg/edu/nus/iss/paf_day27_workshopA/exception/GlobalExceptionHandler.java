@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
-    @ExceptionHandler({MissingValueException.class, InvalidParamException.class})
+    @ExceptionHandler({MissingValueException.class, InvalidParamException.class, NoGameFoundException.class})
     public ResponseEntity<Map<String, String>> handleMissingValueException(RuntimeException ex) {
         Map<String, String> errorMsg = new HashMap<>();
         errorMsg.put("error", ex.getMessage());
