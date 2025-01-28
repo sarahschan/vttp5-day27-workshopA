@@ -114,9 +114,22 @@ public class ReviewController {
             comment = commentRaw;
         }
 
-        reviewService.updateReview(reviewId, rating, comment);
+        try {
+            reviewService.updateReview(reviewId, rating, comment);
+            JsonObject successMsg = Json.createObjectBuilder()
+                .add("success", String.format("Review _id: %s successfully updated", reviewId))
+                .build();
+            return ResponseEntity.status(HttpStatus.OK).body(successMsg.toString());
 
-        return ResponseEntity.status(HttpStatus.OK).body("controller end");
+            
+
+        } catch (Exception ex) {
+            JsonObject errorMsg = Json.createObjectBuilder()
+                .add("error", ex.getMessage())
+                .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg.toString());
+        }
+
     }
 
 }

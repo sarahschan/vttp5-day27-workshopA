@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.paf_day27_workshopA.service;
 
 import static sg.edu.nus.iss.paf_day27_workshopA.util.GameConstants.*;
-import static sg.edu.nus.iss.paf_day27_workshopA.util.ReviewConstants.COMMENT_FIELD_COMMENT;
 
 import java.util.Optional;
 
@@ -9,8 +8,6 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import sg.edu.nus.iss.paf_day27_workshopA.exception.NoCommentFoundException;
 import sg.edu.nus.iss.paf_day27_workshopA.exception.NoGameFoundException;
 import sg.edu.nus.iss.paf_day27_workshopA.repository.GameRepository;

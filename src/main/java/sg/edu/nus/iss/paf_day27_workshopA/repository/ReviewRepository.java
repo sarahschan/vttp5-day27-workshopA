@@ -10,15 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.client.result.UpdateResult;
 
-import jakarta.json.JsonReader;
-
 import static sg.edu.nus.iss.paf_day27_workshopA.util.ReviewConstants.*;
 
-import java.io.StringReader;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 @Repository
 public class ReviewRepository {
