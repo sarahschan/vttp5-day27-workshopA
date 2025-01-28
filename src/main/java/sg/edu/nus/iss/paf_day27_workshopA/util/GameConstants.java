@@ -6,4 +6,5 @@ public class GameConstants {
 
     public static final String GAME_FIELD_ID =  "gid";
     public static final String GAME_FIELD_NAME = "name";
+    
 }
