@@ -2,8 +2,8 @@ package sg.edu.nus.iss.paf_day27_workshopA.service;
 
 import static sg.edu.nus.iss.paf_day27_workshopA.util.GameConstants.*;
 
-import java.io.StringReader;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.Document;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
 import sg.edu.nus.iss.paf_day27_workshopA.exception.NoCommentFoundException;
 import sg.edu.nus.iss.paf_day27_workshopA.exception.NoGameFoundException;
 import sg.edu.nus.iss.paf_day27_workshopA.repository.GameRepository;
@@ -80,4 +79,54 @@ public class ReviewService {
 
     }
 
+
+    public String getLatestReview(String reviewId){
+
+        Document d = reviewRepository.getReviewById(reviewId);
+
+        String user = d.getString("user");
+        int rating = d.getInteger("rating");
+        String comment = d.getString("comment");
+        int id = d.getInteger("ID");
+        String posted = d.getString("posted");
+        String name = d.getString("name");
+        Boolean editedBoolean = false;
+
+        if (d.containsKey("edited") && !d.getList("edited", Document.class).isEmpty()){
+            List<Document> edits = d.getList("edited", Document.class);
+            Document lastEdit = edits.get(edits.size() -1);
+
+            rating = lastEdit.getInteger("rating");
+            comment = lastEdit.getString("comment");
+            posted = lastEdit.getString("posted");
+            editedBoolean = true;
+
+        }
+
+        JsonObject response = Json.createObjectBuilder()
+            .add("user", user)
+            .add("rating", rating)
+            .add("comment", comment)
+            .add("ID", id)
+            .add("posted", posted)
+            .add("name", name)
+            .add("edited", editedBoolean)
+            .add("timestamp", LocalDateTime.now().toString())
+            .build();
+
+
+        return response.toString();
+
+    }
+
+    // {
+    //     user: <name form field>,
+    //     ** rating: <latest rating>,
+    //     ** comment: <latest comment>,
+    //     ID: <game id form field>,
+    //     ** posted: <date>,
+    //     name: <The board game’s name as per ID>,
+    //     ** edited: <true or false depending on edits>,
+    //     timestamp: <result timestamp>
+    // }
 }

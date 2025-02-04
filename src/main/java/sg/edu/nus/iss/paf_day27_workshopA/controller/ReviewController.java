@@ -136,7 +136,20 @@ public class ReviewController {
     @GetMapping(path = "/review/{review_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getLatestReview(@PathVariable(name = "review_id") String reviewId) {
         
-        return null;
+        if (!reviewService.checkReviewExists(reviewId)) {
+            throw new NoCommentFoundException(String.format("Review with id %s does not exist", reviewId));
+        }
+
+        try {
+            String review = reviewService.getLatestReview(reviewId);
+            return ResponseEntity.status(HttpStatus.OK).body(review);
+
+        } catch (Exception ex) {
+            JsonObject errorMsg = Json.createObjectBuilder()
+            .add("error", ex.getMessage())
+            .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg.toString());
+        }
     }
 
 
@@ -160,4 +173,5 @@ public class ReviewController {
         }
         
     }
+
 }
